@@ -2,6 +2,9 @@
 # -*- ruby -*-
 
 require 'test/unit/assertions'
+require 'rainbow'
+
+
 
 class FillMeInError < StandardError
 end
@@ -29,9 +32,9 @@ module EdgeCase
     def accumulate(test)
       if test.passed?
         @pass_count += 1
-        puts "  #{test.name} has expanded your awareness."
+        puts Rainbow("  #{test.name} has expanded your awareness.").green
       else
-        puts "  #{test.name} has damaged your karma."
+        puts Rainbow("  #{test.name} has damaged your karma.").red
         @failed_test = test
         @failure = test.failure
         throw :edgecase_exit
@@ -49,10 +52,10 @@ module EdgeCase
     def report
       if failed?
         puts
-        puts "You have not yet reached enlightenment ..."
+        puts Rainbow("You have not yet reached enlightenment ...").yellow
         puts failure.message
         puts
-        puts "Please meditate on the following code:"
+        puts Rainbow("Please meditate on the following code:").yellow
         if assert_failed?
           puts find_interesting_lines(failure.backtrace)
         else
@@ -73,24 +76,26 @@ module EdgeCase
     # metakoans Ruby Quiz (http://rubyquiz.com/quiz67.html)
     def say_something_zenlike
       puts
-      if !failed?
-        puts "Mountains are again merely mountains"
-      else
-        case (@pass_count % 10)
+
+      message = "Mountains are again merely mountains"
+
+      if failed?
+        message = case (@pass_count % 10)
         when 0
-          puts "mountains are merely mountains"
+          "mountains are merely mountains"
         when 1, 2
-          puts "learn the rules so you know how to break them properly"
+          "learn the rules so you know how to break them properly"
         when 3, 4
-          puts "remember that silence is sometimes the best answer"
+          "remember that silence is sometimes the best answer"
         when 5, 6
-          puts "sleep is the best meditation"
+          "sleep is the best meditation"
         when 7, 8
-          puts "when you lose, don't lose the lesson"
+          "when you lose, don't lose the lesson"
         else
-          puts "things are not what they appear to be: nor are they otherwise"
+          "things are not what they appear to be: nor are they otherwise"
         end
       end
+      puts Rainbow(message).cyan
     end
   end      
 
@@ -130,7 +135,7 @@ module EdgeCase
 
       def run_tests(accumulator)
         puts
-        puts "Thinking #{self}"
+        puts Rainbow("Thinking #{self}").aqua
         testmethods.each do |m|
           self.run_test(m, accumulator) if Koan.test_pattern =~ m.to_s
         end
