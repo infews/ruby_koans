@@ -1,3 +1,5 @@
+$LOAD_PATH.unshift(File.join( File.dirname(__FILE__)))
+
 # The path to Ruby Enlightenment starts with the following:
 
 require 'about_basics'
